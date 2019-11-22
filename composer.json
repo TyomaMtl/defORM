@@ -1,0 +1,16 @@
+{
+    "name": "deform",
+    "description": "L'ORM qui deform tout",
+    "authors": [
+        {
+            "name": "TyomaMtl"
+        },
+        {
+            "name": "Slayyy"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {}
+}
