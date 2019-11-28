@@ -5,25 +5,15 @@ namespace DefORM;
 use \PDO;
 
 class Database 
-{
-    private $host;
-    private $name;
-    private $user;
-    private $pass;
-
-    protected function __construct()
+{    
+    protected function db()
     {
-        $config = file_get_contents('../example/config/config.json');
+        $config = file_get_contents(dirname(__DIR__) . '/example/config/config.json');
         $host = json_decode($config);
-
-        $this->host = $host->host;
-        $this->name = $host->name;
-        $this->user = $host->user;
-        $this->pass = $host->pass;
 
         try 
         {
-            $db = new \PDO('mysql:host=' . $this->host . ';dbname=' . $this->name . ';charset=utf8;', $this->user, $this->pass);
+            $db = new \PDO('mysql:host=' . $host->host . ';dbname=' . $host->name . ';charset=utf8;', $host->user, $host->pass);
             return $db;
         }
         catch(PDOExeption $e)
