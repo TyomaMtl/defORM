@@ -1,6 +1,5 @@
 # /example
 .DS_Store
-config.example.json
 
 # ### Composer ###
 composer.phar
