@@ -8,7 +8,7 @@ class Model
 
     private function __construct()
     {
-        $class = __CLASS__;
+        $this->class = __CLASS__;
     }
 
     protected static function getAll()
