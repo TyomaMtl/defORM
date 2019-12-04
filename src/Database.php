@@ -3,6 +3,7 @@
 namespace DefORM;
 
 use \PDO;
+use PDOException;
 
 class Database 
 {    
@@ -13,13 +14,13 @@ class Database
 
         try 
         {
-            $db = new \PDO('mysql:host=' . $host->host . ';dbname=' . $host->name . ';charset=utf8;', $host->user, $host->pass);
+            $db = new PDO('mysql:host=' . $host->host . ';dbname=' . $host->name . ';charset=utf8;', $host->user, $host->pass);
             return $db;
         }
-        catch(PDOExeption $e)
+        catch(PDOException $e)
         {
             die('Bingo, database out of the game !');
-            exit();
+            exit($e);
         }
     }
 }
