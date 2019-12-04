@@ -1,16 +1,9 @@
 <?php
 
-$autoloader = require '../../vendor/autoload.php';
-$result = $autoloader->findFile('\App\Entity\Film');
+require '../../vendor/autoload.php';
 
-var_dump($autoloader);
+use App\Entity\Film;
 
-use DefORM\Model;
-
-$model = new Model;
-
-
-// use App\Entity\Film;
-
-// $film = new Film();
-// var_dump($film->get_class());
+$film = new Film();
+$film->setTitle('Star Wars');
+$film->save();

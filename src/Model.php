@@ -2,27 +2,102 @@
 
 namespace DefORM;
 
-class Model 
+use DefORM\Database;
+
+class Model extends Database
 {
-    private $class;
-
-    private function __construct()
+    public function save()
     {
-        $class = __CLASS__;
+        if($this->issetTable())
+        {
+            if($this->issetEntity()) // entity exist in database : update
+            {
+                $this->update();
+            }
+            else // : create
+            {
+                $this->insert();
+            }
+        }
+
+        return false;
     }
 
-    protected static function getAll()
+    private function issetTable()
+    {
+        $query = "SELECT 1 FROM " . $this->table() . " LIMIT 1";
+        $check = $this->db()->query($query);
+
+        if($check == false)
+        {
+            return false;
+        }
+
+        return true;        
+    }
+
+    private function issetEntity()
+    {
+        $req = $this->db()->prepare("SELECT id FROM " . $this->table() . " WHERE id = ?");
+        $req->execute([$this->id]);
+        $result = $req->rowCount();
+
+        if($result == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private function properties()
+    {
+        $properties = get_object_vars($this);
+        unset($properties['fieldsTypes']);
+
+        return $properties;
+    }
+
+    private function fieldsTypes()
+    {
+        $properties = get_object_vars($this);
+        
+        return $properties['fieldsTypes'];
+    }
+
+    private function update()
+    {
+        
+    }
+
+    private function insert()
+    {
+        $insert = $this->db()->prepare("INSERT INTO " . $this->table() . " VALUES()");
+        $insert->execute([]);
+    }
+
+    private function issetProperty(string $name)
     {
 
     }
 
-    protected static function get(int $id)
+    private function entity()
     {
-
+        return substr(strrchr(get_class($this), "\\"), 1);
     }
 
-    protected static function get_class()
+    private function table()
     {
-        return $this->class;
+        if(substr($this->entity(), -1) == 's')
+        {
+            return strtolower($this->entity());
+        }
+        else
+        {
+            return strtolower($this->entity()) . 's';
+        }
+
     }
 }
