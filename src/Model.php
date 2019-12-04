@@ -69,7 +69,7 @@ class Model extends Database
 
     private function update()
     {
-        
+
     }
 
     private function insert()
