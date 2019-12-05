@@ -19,6 +19,10 @@ class Model extends Database
                 $this->insert();
             }
         }
+        else
+        {
+            die("Table doesn't exist");
+        }
 
         return false;
     }
@@ -55,6 +59,7 @@ class Model extends Database
     private function properties()
     {
         $properties = get_object_vars($this);
+        unset($properties['id']);
         unset($properties['fieldsTypes']);
 
         return $properties;
@@ -72,16 +77,72 @@ class Model extends Database
 
     }
 
+    private function generateFieldsName()
+    {
+        $fieldsName = null;
+
+        foreach($this->properties() as $k => $p)
+        {
+            if(array_key_last($this->properties()) == $k)
+            {
+                $fieldsName .= $k;
+            }
+            else
+            {
+                $fieldsName .= $k . ',';
+            }
+        }
+
+        return $fieldsName;
+    }
+    
+    public function generateValues()
+    {
+        $values = [];
+
+        foreach($this->properties() as $p)
+        { 
+            $values[] = $p;
+        }
+
+        return $values;
+    }
+
+    private function generateQuestionMark()
+    {
+        $questionMark = null;
+
+        for ($i=0; $i < count($this->properties()); $i++)
+        {
+            if($i == count($this->properties())-1)
+            {
+                $questionMark.= '?';
+            }
+            else
+            {
+                $questionMark.= '?,';
+            }
+        }
+        
+        return $questionMark;
+    }
+
     private function insert()
     {
-        $insert = $this->db()->prepare("INSERT INTO " . $this->table() . " VALUES()");
-        $insert->execute([]);
+        $query = "INSERT INTO " .$this->table() . " (" . $this->generateFieldsName() . ") VALUES(" . $this->generateQuestionMark() . ")";
+
+        $insert = $this->db()->prepare($query);
+        
+        if($insert->execute($this->generateValues()) == false)
+        {
+            die($insert->errorInfo()[2]);
+        }
     }
 
-    private function issetProperty(string $name)
-    {
+    // private function issetProperty(string $name)
+    // {
 
-    }
+    // }
 
     private function entity()
     {
