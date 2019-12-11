@@ -72,7 +72,7 @@ class Model extends Database
         return $properties['fieldsTypes'];
     }
 
-    public function update()
+    private function update()
     {
         $values = [];
         for($i = count($this->generateValues()) - 1; $i >= 0; $i--)
@@ -104,7 +104,7 @@ class Model extends Database
         return false;
     }
 
-    public function generateFieldsName()
+    private function generateFieldsName()
     {
         $fieldsName = null;
 
@@ -123,7 +123,7 @@ class Model extends Database
         return $fieldsName;
     }
     
-    public function generateValues()
+    private function generateValues()
     {
         $values = [];
 
