@@ -59,7 +59,7 @@ class Model extends Database
     private function properties()
     {
         $properties = get_object_vars($this);
-        unset($properties['id']);
+        // unset($properties['id']);
         unset($properties['fieldsTypes']);
 
         return $properties;
@@ -72,12 +72,39 @@ class Model extends Database
         return $properties['fieldsTypes'];
     }
 
-    private function update()
+    public function update()
     {
+        $values = [];
+        for($i = count($this->generateValues()) - 1; $i >= 0; $i--)
+        {
+            $values[] = $this->generateValues()[$i];
+        }
 
+        $fieldsName = explode(',', $this->generateFieldsName());
+        
+        $fields = null;
+        for($i = 1; $i < count($fieldsName); $i++)
+        {
+            $fields .= $fieldsName[$i] . ' = ?'; 
+        }
+
+        if(!is_null($fields))
+        {
+            $query = "UPDATE " . $this->table() . " SET " . $fields . " WHERE id = ?";
+
+            $update = $this->db()->prepare($query);
+            if($update->execute($values) == false)
+            {
+                die($update->errorInfo()[2]);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
-    private function generateFieldsName()
+    public function generateFieldsName()
     {
         $fieldsName = null;
 
@@ -132,17 +159,15 @@ class Model extends Database
         $query = "INSERT INTO " .$this->table() . " (" . $this->generateFieldsName() . ") VALUES(" . $this->generateQuestionMark() . ")";
 
         $insert = $this->db()->prepare($query);
+
+        $values = $this->generateValues();
+        unset($values[0]);
         
         if($insert->execute($this->generateValues()) == false)
         {
             die($insert->errorInfo()[2]);
         }
     }
-
-    // private function issetProperty(string $name)
-    // {
-
-    // }
 
     private function entity()
     {
