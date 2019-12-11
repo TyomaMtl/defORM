@@ -21,7 +21,7 @@ Créer un fichier `config.json` dans votre projet
 
 Admettons que nous avons une table de films. Cette table a un *id* et un *titre* et est déjà créé dans notre base de donnée avec les champs `id` et `title`.
 
-##### Entity
+#### Entity
 
 Nous créons un nouveau fichier `Film.php` dans un dossier `Entity`.
 
@@ -62,9 +62,9 @@ class Film extends Model
 }
 ```
 
-Nous créons nos propriété **protected** `$id` et `$title` ainsi que les `getters` et `setter`. Les propriétés **protected** permettent à la class `Model` d'accéder à ces dernières.
+Nous créons nos propriétés **protected** `$id` et `$title` ainsi que les `getters` et `setter`. Les propriétés **protected** permettent à la class `Model` d'accéder à ces dernières.
 
-##### Repository
+#### Repository
 
 Le **repository** est le *carton qui contient tous nos films* et qui permet de les recupérer selon nos besoin.
 
