@@ -22,22 +22,20 @@ class FilmRepository extends Repository {
         return self::$instance;
     }
 
-    public function getAll()
-    {
-        $req = $this->db()->query("SELECT * FROM films ORDER BY id DESC");
-        $req->setFetchMode(PDO::FETCH_CLASS, 'App\\Entity\\Film');
-        $result = $req->fetchAll();
-
-        return $result;
-    }
-
-    public function getById(int $id)
-    {
-        $req = $this->db()->prepare("SELECT * FROM films WHERE id = ?");
-        $req->execute([$id]);
-        $req->setFetchMode(PDO::FETCH_CLASS, 'App\\Entity\\Film');
-        $result = $req->fetch();
-     
-        return $result;
-    }
+    /**
+     * defORM already implement some basic query functions as :
+     * - getAll()
+     * - getById(int $id)
+     * 
+     * You can create your own query, here is an example
+     * 
+     * public function getAll()
+     * {
+     *    $req = $this->db()->query("SELECT * FROM films ORDER BY id DESC");
+     *    $req->setFetchMode(PDO::FETCH_CLASS, 'App\\Entity\\Film');
+     *    $result = $req->fetchAll();
+     *
+     *    return $result;
+     * }
+     */
 }

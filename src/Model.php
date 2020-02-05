@@ -27,6 +27,14 @@ class Model extends Database
         return false;
     }
 
+    public function delete() 
+    {
+        $delete = $this->db()->prepare("DELETE FROM " . $this->table() . " WHERE id = ?");
+        $delete->execute([$this->id]);
+
+        return true;
+    }
+
     private function issetTable()
     {
         $query = "SELECT 1 FROM " . $this->table() . " LIMIT 1";
