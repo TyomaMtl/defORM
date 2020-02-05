@@ -154,3 +154,12 @@ $film = $films->getById('1');
 $film->setTitle('Nouveau title');
 $film->save();
 ```
+
+##### Delete
+
+```php
+use App\Repository\FilmRepository;
+
+$films = FilmRepository::getRepository();
+$film = $films->getById('1');
+$film->delete();
